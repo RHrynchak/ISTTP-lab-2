@@ -16,27 +16,30 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<User>().HasIndex(u => u.Email).IsUnique();
+        modelBuilder.Entity<User>().HasIndex(u => u.Username).IsUnique();
+
         modelBuilder.Entity<Contract>()
             .HasOne(c => c.Client)
-            .WithMany()
+            .WithMany(u => u.ContractsAsClient) 
             .HasForeignKey(c => c.ClientId)
-            .OnDelete(DeleteBehavior.Restrict); 
+            .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Contract>()
             .HasOne(c => c.Booster)
-            .WithMany()
+            .WithMany(u => u.ContractsAsBooster)
             .HasForeignKey(c => c.BoosterId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Reviewer)
-            .WithMany()
+            .WithMany(u => u.ReviewsGiven) 
             .HasForeignKey(r => r.ReviewerId)
             .OnDelete(DeleteBehavior.Restrict);
 
         modelBuilder.Entity<Review>()
             .HasOne(r => r.Reviewee)
-            .WithMany()
+            .WithMany(u => u.ReviewsReceived) 
             .HasForeignKey(r => r.RevieweeId)
             .OnDelete(DeleteBehavior.Restrict);
 
