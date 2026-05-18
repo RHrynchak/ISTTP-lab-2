@@ -8,10 +8,10 @@ namespace ISTTP_lab_2.Models
         public int Id { get; set; }
 
         public int ClientId { get; set; }
-        public User Client { get; set; } = null!;
+        public User? Client { get; set; } = null!;
 
         public int BoosterId { get; set; }
-        public User Booster { get; set; } = null!;
+        public User? Booster { get; set; } = null!;
 
         public int Price { get; set; }
         public int StartMMR { get; set; }

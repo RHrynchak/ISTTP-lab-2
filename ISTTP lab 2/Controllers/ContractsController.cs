@@ -21,6 +21,7 @@ namespace ISTTP_lab_2.Controllers
             return await _context.Contracts
                 .Include(c => c.Client)
                 .Include(c => c.Booster)
+                .Include(c => c.Reviews)
                 .ToListAsync();
         }
 

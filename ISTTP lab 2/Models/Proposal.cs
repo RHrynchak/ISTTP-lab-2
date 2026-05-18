@@ -6,10 +6,10 @@ namespace ISTTP_lab_2.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public User? User { get; set; } = null!;
 
         public int ListingId { get; set; }
-        public Listing Listing { get; set; } = null!;
+        public Listing? Listing { get; set; } = null!;
 
         public int Price { get; set; }
         public ProposalStatus Status { get; set; }

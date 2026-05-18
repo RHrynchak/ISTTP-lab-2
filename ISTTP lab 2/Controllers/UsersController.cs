@@ -18,7 +18,10 @@ namespace ISTTP_lab_2.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            return await _context.Users
+                .Include(u => u.Listings)
+                .Include(u => u.Proposals)
+                .ToListAsync();
         }
 
         [HttpGet("{id}")]
@@ -27,6 +30,10 @@ namespace ISTTP_lab_2.Controllers
             var user = await _context.Users
                 .Include(u => u.Listings)
                 .Include(u => u.Proposals)
+                .Include(u => u.ContractsAsClient)
+                .Include(u => u.ContractsAsBooster)
+                .Include(u => u.ReviewsGiven)
+                .Include(u => u.ReviewsReceived)
                 .FirstOrDefaultAsync(u => u.Id == id);
 
             if (user == null) return NotFound();

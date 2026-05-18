@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DotaBoost</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">Dota<span>Boost</span></div>
+        <div class="user-info">
+            <label for="accountSelector" style="font-size: 0.8rem; color: var(--text-muted); margin-right: 10px;">Увійти як:</label>
+            <select id="accountSelector" class="account-select">
+                <option value="1">Клієнт (ID: 1 - MidOrFeed)</option>
+                <option value="2">Бустер (ID: 2 - YatoroSmurf)</option>
+            </select>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="header-actions">
+            <h2>Відкриті замовлення</h2>
+            <button id="btnOpenModal" class="btn btn-primary">Створити замовлення</button>
+        </div>
+
+        <div id="listingsGrid" class="listings-grid">
+            <div class="loading">Завантаження даних з сервера...</div>
+        </div>
+
+        <div class="header-actions" style="margin-top: 3rem; border-top: 2px solid #d32f2f; padding-top: 2rem;">
+            <h2>Мої контракти</h2>
+        </div>
+        <div id="contractsGrid" class="listings-grid">
+            <div style="color: #888;">Завантаження контрактів...</div>
+        </div>
+    </main>
+
+    <div id="createListingModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>Нове замовлення на буст</h3>
+            <form id="createListingForm">
+                <div class="form-group">
+                    <label>Поточний MMR</label>
+                    <input type="number" id="inputStartMMR" required min="0" max="12000" placeholder="Напр. 1500">
+                </div>
+                <div class="form-group">
+                    <label>Бажаний MMR</label>
+                    <input type="number" id="inputTargetMMR" required min="0" max="12000" placeholder="Напр. 2000">
+                </div>
+                <div class="form-group">
+                    <label>Ціна (₴)</label>
+                    <input type="number" id="inputPrice" required min="1" placeholder="Напр. 500">
+                </div>
+                <div class="form-group">
+                    <label>Коментар (побажання, пул героїв)</label>
+                    <textarea id="inputComment" rows="3" placeholder="Грати тільки на керрі..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-submit">Створити</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="createProposalModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeProposalBtn">&times;</span>
+            <h3>Відгук на замовлення #<span id="proposalListingIdDisplay"></span></h3>
+            <form id="createProposalForm">
+                <input type="hidden" id="inputProposalListingId">
+
+                <div class="form-group">
+                    <label>Ваша ціна (₴)</label>
+                    <input type="number" id="inputProposalPrice" required min="1" placeholder="Запропонуйте ціну">
+                </div>
+                <div class="form-group">
+                    <label>Коментар для клієнта</label>
+                    <textarea id="inputProposalComment" rows="3" placeholder="Зроблю швидко, мій мейн Титан..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-submit">Надіслати пропозицію</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="createReviewModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeReviewBtn">&times;</span>
+            <h3>Завершення контракту #<span id="reviewContractIdDisplay"></span></h3>
+            <p style="color: #aaa; margin-bottom: 15px;">Оцініть роботу бустера</p>
+            <form id="createReviewForm">
+                <input type="hidden" id="inputReviewContractId">
+                <input type="hidden" id="inputReviewBoosterId">
+
+                <div class="form-group">
+                    <label>Оцінка (від 1 до 5)</label>
+                    <input type="number" id="inputReviewScore" required min="1" max="5" value="5">
+                </div>
+                <div class="form-group">
+                    <label>Ваш відгук</label>
+                    <textarea id="inputReviewText" rows="3" required placeholder="Чудова робота, швидко апнув ранг!"></textarea>
+                </div>
+                <button type="submit" class="btn btn-submit" style="background-color: #4caf50;">Завершити та Оцінити</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="userProfileModal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-btn" id="closeProfileBtn">&times;</span>
+            <h3 id="profileUsername">Ім'я гравця</h3>
+
+            <div style="margin: 15px 0; padding: 15px; background: #2a2a2a; border-radius: 6px;">
+                <p style="margin-bottom: 8px;"><strong>Рейтинг бустера:</strong> <span id="profileBoosterRating" style="color: var(--gold); font-size: 1.1rem; font-weight: bold;"></span> / 5</p>
+                <p style="margin-bottom: 8px;"><strong>Поточний MMR:</strong> <span id="profileMMR" style="color: #d32f2f; font-weight: bold;"></span></p>
+                <p><strong>Позиція:</strong> <span id="profilePosition" style="color: #4caf50;"></span></p>
+            </div>
+
+            <h4 style="margin-bottom: 10px; color: var(--text-muted);">Відгуки клієнтів:</h4>
+            <div id="profileReviewsList" style="max-height: 250px; overflow-y: auto; padding-right: 5px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

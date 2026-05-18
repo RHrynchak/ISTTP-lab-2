@@ -6,7 +6,7 @@ namespace ISTTP_lab_2.Models
     {
         public int Id { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; } = null!;
+        public User? User { get; set; } = null!;
 
         public ListingType Type { get; set; }
         public int StartMMR { get; set; }

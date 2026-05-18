@@ -20,7 +20,8 @@ namespace ISTTP_lab_2.Controllers
         {
             return await _context.Reviews
                 .Include(r => r.Reviewer) 
-                .Include(r => r.Reviewee) 
+                .Include(r => r.Reviewee)
+                .Include(r => r.Contract)
                 .ToListAsync();
         }
 

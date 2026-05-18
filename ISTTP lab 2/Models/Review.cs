@@ -5,13 +5,13 @@
         public int Id { get; set; }
 
         public int ContractId { get; set; }
-        public Contract Contract { get; set; } = null!;
+        public Contract? Contract { get; set; } = null!;
 
         public int ReviewerId { get; set; }
-        public User Reviewer { get; set; } = null!;
+        public User? Reviewer { get; set; } = null!;
 
         public int RevieweeId { get; set; }
-        public User Reviewee { get; set; } = null!;
+        public User? Reviewee { get; set; } = null!;
 
         public int Score { get; set; } 
         public string Text { get; set; } = string.Empty;

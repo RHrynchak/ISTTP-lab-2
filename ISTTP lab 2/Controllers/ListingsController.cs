@@ -21,6 +21,7 @@ namespace ISTTP_lab_2.Controllers
             return await _context.Listings
                 .Include(l => l.User)
                 .Include(l => l.Proposals)
+                    .ThenInclude(p => p.User)
                 .ToListAsync();
         }
 
@@ -30,6 +31,7 @@ namespace ISTTP_lab_2.Controllers
             var listing = await _context.Listings
                 .Include(l => l.User)
                 .Include(l => l.Proposals)
+                    .ThenInclude(p => p.User)
                 .FirstOrDefaultAsync(l => l.Id == id);
 
             if (listing == null) return NotFound();

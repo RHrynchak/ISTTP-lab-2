@@ -21,6 +21,7 @@ namespace ISTTP_lab_2.Controllers
         {
             return await _context.Proposals
                 .Include(p => p.User)
+                .Include(p => p.Listing)
                 .ToListAsync();
         }
 
@@ -53,8 +54,17 @@ namespace ISTTP_lab_2.Controllers
             if (proposal == null) return NotFound();
 
             proposal.Status = newStatus;
+            if (newStatus == ProposalStatus.Accepted)
+            {
+                var otherProposals = await _context.Proposals
+                    .Where(p => p.ListingId == proposal.ListingId && p.Id != id && p.Status == ProposalStatus.Pending)
+                    .ToListAsync();
+                foreach (var otherProposal in otherProposals)
+                {
+                    otherProposal.Status = ProposalStatus.Rejected;
+                }
+            }
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 
