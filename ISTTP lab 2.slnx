@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="ISTTP lab 2/ISTTP lab 2.csproj" />
+  <Project Path="ISTTP_lab_2.Tests/ISTTP_lab_2.Tests.csproj" Id="d26a1bf0-3948-4a2d-a8f7-f58adf7c53b8" />
 </Solution>
